@@ -89,9 +89,11 @@ const Table = () => {
                             </tr>
                         ))}
                         <tr>
-                            {averageArr.map((item) => (
-                                <td key={item.id} className="sum-column">{item.amount}</td>
-                            ))}
+                            {averageArr ?
+                                averageArr.map((item) => (
+                                    <td key={item.id} className="sum-column">{item.amount}</td>
+                                )) : null
+                            }
                         </tr>
                         </tbody>
                     </table>

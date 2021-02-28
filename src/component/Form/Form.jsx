@@ -24,7 +24,7 @@ const Form = () => {
 
     const createMatrix = (e) => {
         e.preventDefault()
-        if(state.row <= 100 && state.row > 0 && state.column <= 20 && state.column > 0){
+        if(state.row <= 100 && state.row > 0 && state.column <= 20 && state.column > 0 && state.count >= 0){
             let tableData = createTable(state.row, state.column)
             dispatch(setData({
                 tableData,
