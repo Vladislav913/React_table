@@ -50,7 +50,7 @@ const Form = () => {
                            className="form-input" type="number"/>
                     <button onClick={createMatrix} className="btn-submit" type="submit">Create</button>
                 </form>
-                {state.error ? <p className="status-message">Row range 1-100, column range 1-20</p> : null }
+                {state.error && <p className="status-message">Row range 1-100, column range 1-20</p>}
             </div>
         </div>
     )

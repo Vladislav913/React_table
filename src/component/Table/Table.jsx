@@ -89,16 +89,16 @@ const Table = () => {
                             </tr>
                         ))}
                         <tr>
-                            {averageArr ?
+                            {averageArr &&
                                 averageArr.map((item) => (
                                     <td key={item.id} className="sum-column">{item.amount}</td>
-                                )) : null
+                                ))
                             }
                         </tr>
                         </tbody>
                     </table>
 
-                    {data.length > 0 ? <button onClick={addRow} className='btn-table'>Add row</button> : null}
+                    {data.length > 0 && <button onClick={addRow} className='btn-table'>Add row</button> }
 
                 </div>
             </div>
