@@ -6,18 +6,18 @@ import {setData} from "../../redux/actions/table";
 import {useDispatch} from "react-redux";
 
 type StateType ={
-    row: number | null,
-    column: number | null,
-    count: number | null,
+    row: number,
+    column: number ,
+    count: number,
     error: boolean,
 }
 
 const Form:React.FC = () => {
     const dispatch = useDispatch()
     const [state, setState] = useState<StateType>({
-        row: null,
-        column: null,
-        count: null,
+        row: 0 ,
+        column: 0,
+        count: 0,
         error: false
     })
 
