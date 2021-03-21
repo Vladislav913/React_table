@@ -1,19 +1,27 @@
 import './form.scss'
 import {useState} from "react";
 import {createTable} from "./formCreate";
-import {useDispatch} from "react-redux";
-import {setData} from "../../redux/actions/table";
 
-const Form = () => {
+import {setData} from "../../redux/actions/table";
+import {useDispatch} from "react-redux";
+
+type StateType ={
+    row: number | null,
+    column: number | null,
+    count: number | null,
+    error: boolean,
+}
+
+const Form:React.FC = () => {
     const dispatch = useDispatch()
-    const [state, setState] = useState({
-        row: '',
-        column: '',
-        count: '',
+    const [state, setState] = useState<StateType>({
+        row: null,
+        column: null,
+        count: null,
         error: false
     })
 
-    const handleChange = (e) => {
+    const handleChange = (e:React.ChangeEvent<HTMLInputElement>):void => {
         setState({
             ...state,
             [e.target.name]: e.target.value,
@@ -22,7 +30,8 @@ const Form = () => {
 
     }
 
-    const createMatrix = (e) => {
+
+    const createMatrix = (e:React.MouseEvent<HTMLButtonElement> ):void => {
         e.preventDefault()
         if(state.row <= 100 && state.row > 0 && state.column <= 20 && state.column > 0 && state.count >= 0){
             let tableData = createTable(state.row, state.column)

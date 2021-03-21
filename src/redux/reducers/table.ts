@@ -1,13 +1,5 @@
-import {
-    ADD_ROW,
-    HIGHLIGHT,
-    HIGHLIGHT_RESET,
-    INCREASE_ITEM,
-    NUMBER_CALC,
-    PERCENT_CALC,
-    REMOVE_ROW,
-    SET_DATA
-} from "../actions/table";
+import {TableAction} from "../actions/table";
+
 import {
     addRowFunc,
     calculateAverage,
@@ -17,11 +9,23 @@ import {
     percentNumber,
     sumData
 } from "../../tableControll"
+import {RootActionType} from "../actions/tableActionTypes";
+import {AmountAverageInterface, AmountType, TableArrType} from "../../dataType";
 
 
-const initialState = {
+type StateType = {
+    data: TableArrType[],
+    highlightCount: number,
+    averageArr: AmountAverageInterface[] | [],
+    sumRowArr: AmountType[],
+    percent: boolean,
+    sum: number,
+    highlightArr: AmountType[]
+}
+
+const initialState: StateType = {
     data: [],
-    highlightCount: null,
+    highlightCount: 0,
     averageArr: [],
     sumRowArr: [],
     percent: false,
@@ -29,9 +33,9 @@ const initialState = {
     highlightArr: []
 };
 
-const table = (state = initialState, action) => {
+export const table = (state = initialState, action: RootActionType): StateType => {
     switch (action.type) {
-        case SET_DATA:
+        case TableAction.SET_DATA:
             let averageArrCreate = calculateAverage(action.payload.tableData);
             let calculateRowResult = calculateRow(action.payload.tableData);
             let sumDataCulc = sumData(calculateRowResult);
@@ -44,8 +48,8 @@ const table = (state = initialState, action) => {
                 highlightCount: action.payload.count
             };
 
-        case INCREASE_ITEM:
-            let increaseData = increaseValueData(state.data, action.payload.keyRow, action.payload.amount);
+        case TableAction.INCREASE_ITEM:
+            let increaseData = increaseValueData(state.data, action.payload.keyRow);
             let calculateRowResults = calculateRow(increaseData);
             let averageArrCreates = calculateAverage(increaseData);
             return {
@@ -55,8 +59,8 @@ const table = (state = initialState, action) => {
                 sumRowArr: calculateRowResults,
             };
 
-        case REMOVE_ROW:
-            let data = state.data.filter(rowObj => rowObj.id !== action.id);
+        case TableAction.REMOVE_ROW:
+            let data = state.data.filter(rowObj => rowObj.id !== action.payload);
             let averageArrCreat = calculateAverage(data);
             return {
                 ...state,
@@ -64,37 +68,37 @@ const table = (state = initialState, action) => {
                 averageArr: averageArrCreat,
             };
 
-        case PERCENT_CALC:
-            const percentRow = percentCalc(state.data, action.id, state.sum);
+        case TableAction.PERCENT_CALC:
+            const percentRow = percentCalc(state.data, action.payload, state.sum);
             return {
                 ...state,
                 data: percentRow,
             };
 
-        case NUMBER_CALC:
-            const percentNumberRow = percentNumber(state.data, action.id, state.sum);
+        case TableAction.NUMBER_CALC:
+            const percentNumberRow = percentNumber(state.data, action.payload, state.sum);
             return {
                 ...state,
                 data: percentNumberRow
             };
 
-        case HIGHLIGHT:
-            const highlightData = handleClosestArr(action.obj.cellAmount, action.obj.cellId, action.obj.closestQuantity, state.data);
+        case TableAction.HIGHLIGHT:
+            const highlightData = handleClosestArr(action.payload.cellAmount, action.payload.cellId, action.payload.closestQuantity, state.data);
             return {
                 ...state,
                 highlightArr: highlightData
             };
 
-        case HIGHLIGHT_RESET:
+        case TableAction.HIGHLIGHT_RESET:
             return {
                 ...state,
                 highlightArr: []
             };
 
-        case ADD_ROW:
+        case TableAction.ADD_ROW:
             const newRow = addRowFunc(state.data[0].rowArr.length);
             const newData = [...state.data, newRow];
-            let averageArr =  calculateAverage(newData);
+            let averageArr = calculateAverage(newData);
             let calculateTableRow = calculateRow(newData);
             let sumDataArr = sumData(calculateTableRow);
             return {
@@ -110,4 +114,4 @@ const table = (state = initialState, action) => {
     }
 };
 
-export default table;
+

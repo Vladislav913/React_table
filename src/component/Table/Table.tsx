@@ -1,7 +1,8 @@
-import {useDispatch, useSelector} from "react-redux";
 import TableRow from "./TableRow";
-import './table.scss';
-import {debounce} from "../../debounce";
+
+import {RootState, useTypeSelector} from "../../redux/reducers";
+import {useDispatch} from "react-redux";
+
 import {
     addRowAction,
     highlightItemAction, highlightResetAction,
@@ -11,27 +12,31 @@ import {
     removeRowAction
 } from "../../redux/actions/table";
 
-const Table = () => {
-    const dispatch = useDispatch()
-    let {data, sumRowArr, averageArr, highlightArr, highlightCount} = useSelector(state => state.table)
+import {AmountType, TableArrType} from "../../dataType";
 
-    const increaseValue = (id, keyRow, amount) => {
+import './table.scss';
+
+
+const Table:React.FC = () => {
+    const dispatch = useDispatch()
+    let {data, sumRowArr, averageArr, highlightArr, highlightCount} = useTypeSelector((state:RootState) => state.table)
+
+    const increaseValue = (id:number, keyRow:number, amount:number) => {
         dispatch(increaseItem({
-            id,
             keyRow,
             amount
         }))
     }
 
-    const removeRow = (id) => {
+    const removeRow = (id:number) => {
         dispatch(removeRowAction(id))
     }
 
-    const calcPercentrow = (id) => {
+    const calcPercentRow = (id:number) => {
         dispatch(percentCalcAction(id))
     }
 
-    const calcNumberRow = (id) => {
+    const calcNumberRow = (id:number) => {
         dispatch(numberCalcAction(id))
     }
 
@@ -43,12 +48,12 @@ const Table = () => {
         dispatch(addRowAction())
     }
 
-    const highlightItem = (cellAmount, cellId, closestQuantity) => {
+    const highlightItem = (cellAmount:number, cellId:number, closestQuantity:number) => {
         dispatch(highlightItemAction({
             cellAmount,
             cellId,
             closestQuantity,
-            data,
+            data
         }))
     }
 
@@ -58,8 +63,7 @@ const Table = () => {
                 <div className="table__wrap">
                     <table className="table">
                         <tbody>
-                        {data.map((item, index) => (
-
+                        {data.map((item:TableArrType, index:number) => (
                             <tr
                                 key={item.id}
                             >
@@ -73,8 +77,8 @@ const Table = () => {
                                 />
 
                                 <td className="table__sum"
-                                    onMouseEnter={() => debounce(calcPercentrow(item.id), 200)}
-                                    onMouseLeave={() => debounce(calcNumberRow(item.id), 200)}
+                                    onMouseEnter={() => calcPercentRow(item.id)}
+                                    onMouseLeave={() => calcNumberRow(item.id)}
                                 >{sumRowArr[index].amount}</td>
 
                                 <td className="cancel-row" onClick={() => removeRow(item.id)} key={item.id}>
@@ -90,8 +94,9 @@ const Table = () => {
                         ))}
                         <tr>
                             {averageArr &&
-                                averageArr.map((item) => (
+                                averageArr.map((item: AmountType) => (
                                     <td key={item.id} className="sum-column">{item.amount}</td>
+
                                 ))
                             }
                         </tr>

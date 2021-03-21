@@ -1,8 +1,10 @@
-export const calculateAverage = (arr) => {
+import {AmountAverageInterface, AmountType, RowObjectType, TableArrType} from "./dataType";
+
+export const calculateAverage = (arr: Array<TableArrType>): Array<AmountAverageInterface> | []  => {
     if(arr.length > 0){
-        const averageArr = [];
+        const averageArr: Array<AmountAverageInterface> = [];
         for (let i = 0; i < arr[0].rowArr.length; ++i) {
-            let colunmSum = 0;
+            let colunmSum: number = 0;
             for (let j = 0; j < arr.length; ++j) {
                 colunmSum += arr[j].rowArr[i].amount;
             }
@@ -13,12 +15,13 @@ export const calculateAverage = (arr) => {
         }
         return averageArr;
     }
+    return []
 }
 
-export const calculateRow = (arr) => {
-    const sumArr = [];
+export const calculateRow = (arr: Array<TableArrType>): Array<AmountAverageInterface> => {
+    const sumArr: Array<AmountAverageInterface> = [];
     for (let i = 0; i < arr.length; ++i) {
-        let rowSum = 0;
+        let rowSum: number = 0;
         for (let k = 0; k < Object.entries(arr[i].rowArr).length; k++) {
             rowSum += arr[i].rowArr[k].amount;
         }
@@ -30,11 +33,11 @@ export const calculateRow = (arr) => {
     return sumArr
 }
 
-export const increaseValueData = (arr, rowId) => {
-
-    return arr.map((rowObj, rowKey) => ({
+export const increaseValueData = (arr: Array<TableArrType>, rowId: number): Array<TableArrType> => {
+    return arr.map((rowObj: TableArrType) => ({
         ...rowObj,
-        rowArr: rowObj.rowArr.map((cell) => {
+        rowArr: rowObj.rowArr.map((cell: RowObjectType) => {
+
             if (cell.id !== rowId) {
                 return cell;
             }
@@ -44,17 +47,18 @@ export const increaseValueData = (arr, rowId) => {
                 amount: cell.amount + 1,
             };
         }),
+
     }));
 }
 
-export const percentCalc = (arr, rowId, sum) => {
-    return arr.map((rowObj) => {
+export const percentCalc = (arr: Array<TableArrType>, rowId: number, sum: number): Array<TableArrType> => {
+    return arr.map((rowObj: TableArrType) => {
         if (rowObj.id !== rowId) {
             return rowObj;
         }
         return {
             ...rowObj,
-            rowArr: rowObj.rowArr.map((item) => {
+            rowArr: rowObj.rowArr.map((item: RowObjectType) => {
                 return {
                     ...item,
                     amount: +((+item.amount / sum) * 100).toFixed(2),
@@ -65,14 +69,14 @@ export const percentCalc = (arr, rowId, sum) => {
     });
 }
 
-export const percentNumber = (arr, rowId, sumArr) => {
-    return arr.map((rowObj) => {
+export const percentNumber = (arr: Array<TableArrType>, rowId: number, sumArr: number) => {
+    return arr.map((rowObj: TableArrType) => {
         if (rowObj.id !== rowId) {
             return rowObj;
         }
         return {
             ...rowObj,
-            rowArr: rowObj.rowArr.map((item) => {
+            rowArr: rowObj.rowArr.map((item: RowObjectType) => {
                 return {
                     ...item,
                     amount: +((+item.amount * +sumArr) / 100).toFixed(0),
@@ -83,21 +87,21 @@ export const percentNumber = (arr, rowId, sumArr) => {
     });
 }
 
-export const handleClosestArr = (cellAmount, cellId, closestQuantity, data) => {
-    const diff = data.map((row) => row.rowArr
-        .map((item) => ({id: item.id, amount: Math.abs(item.amount - cellAmount)}))).flat();
+export const handleClosestArr = (cellAmount: number, cellId: number, closestQuantity: number, data: TableArrType[]) => {
+    const diff = data.map((row: TableArrType) => row.rowArr
+        .map((item: RowObjectType) => ({id: item.id, amount: Math.abs(item.amount - cellAmount)}))).flat();
 
-    const diffwithoutCell = diff.filter((item) => item.id !== cellId);
+    const diffwithoutCell = diff.filter((item: AmountType) => item.id !== cellId);
 
     const filteredDiff = diffwithoutCell
-        .sort((a, b) => a.amount - b.amount)
+        .sort((a: AmountType, b: AmountType) => a.amount - b.amount)
         .slice(0, closestQuantity);
 
     return filteredDiff
 };
 
-export const addRowFunc = (rowLength) => {
-    const rowObj = {id: Math.random(), rowArr: []};
+export const addRowFunc = (rowLength: number) => {
+    const rowObj:TableArrType = {id: Math.random(), rowArr: []};
     for (let j = 0; j < +rowLength; ++j) {
         const cellObj = {
             id: Math.random(),
@@ -109,6 +113,6 @@ export const addRowFunc = (rowLength) => {
     return rowObj
 }
 
-export const sumData = (data) => {
-    return data.reduce((sum, curent) => sum + curent.amount, 0)
+export const sumData = (data: AmountType[]) => {
+    return data.reduce((sum: number, curent:AmountType) => sum + curent.amount, 0)
 }

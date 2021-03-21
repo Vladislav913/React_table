@@ -3,7 +3,7 @@ import Form from "./component/Form/Form";
 import Table from "./component/Table/Table";
 
 
-function App() {
+const App: React.FC = () => {
     return (
         <div className="App">
             <Form/>
