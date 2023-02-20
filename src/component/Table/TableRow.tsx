@@ -23,6 +23,8 @@ interface PropsInterface {
 const TableRow: React.FC<PropsInterface> = ({rowArr, increaseValue, highlightItem, highlightArr, highlightCount, highlightReset}) => {
     const cellTableHighlight = (id: number): rowArrInterface | undefined => {
         return highlightArr.find((el: HighlightArrType) => {
+            console.log(el);
+            
             return el.id === id
         })
     };
