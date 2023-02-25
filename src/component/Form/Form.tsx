@@ -13,6 +13,7 @@ type StateType ={
 }
 
 const Form:React.FC = () => {
+    console.log(1)
     const dispatch = useDispatch()
     const [state, setState] = useState<StateType>({
         row: 0 ,
@@ -20,6 +21,8 @@ const Form:React.FC = () => {
         count: 0,
         error: false
     })
+
+    console.log(2)
 
     const handleChange = (e:React.ChangeEvent<HTMLInputElement>):void => {
         setState({
