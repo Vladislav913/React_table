@@ -24,6 +24,8 @@ const Form:React.FC = () => {
 
     console.log(2)
 
+    console.log(3)
+
     const handleChange = (e:React.ChangeEvent<HTMLInputElement>):void => {
         setState({
             ...state,
